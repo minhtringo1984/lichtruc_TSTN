@@ -1,376 +1,1050 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LỊCH TRỰC TÒA SOẠN TỔNG HỢP</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg:#EEF1F5; --ink:#141C26; --muted:#667488; --faint:#9AA6B4;
-    --surface:#FFFFFF; --line:#DCE2EA; --line-strong:#C3CCD6;
-    --accent:#243FB0; --accent-soft:#E6EAF8;
-    --amber:#C9821E; --amber-soft:#FBEFDA; --danger:#B4413C; --weekend:#8C5A2B;
-    --radius:14px; --shadow:0 1px 2px rgba(20,28,38,.05),0 8px 24px rgba(20,28,38,.08);
-    --mono:'Space Mono',ui-monospace,Menlo,monospace;
-    --sans:'Be Vietnam Pro',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-  }
-  *{box-sizing:border-box} html,body{margin:0;padding:0}
-  body{font-family:var(--sans);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.5}
-  button{font-family:inherit;cursor:pointer}
-  :focus-visible{outline:2.5px solid var(--accent);outline-offset:2px;border-radius:6px}
-  .wrap{max-width:1180px;margin:0 auto;padding:24px 20px 80px}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LỊCH TRỰC TÒA SOẠN TỔNG HỢP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #EEF1F5;
+      --ink: #141C26;
+      --muted: #667488;
+      --faint: #9AA6B4;
+      --surface: #FFFFFF;
+      --line: #DCE2EA;
+      --line-strong: #C3CCD6;
+      --accent: #243FB0;
+      --accent-soft: #E6EAF8;
+      --amber: #C9821E;
+      --amber-soft: #FBEFDA;
+      --danger: #B4413C;
+      --weekend: #8C5A2B;
+      --radius: 14px;
+      --shadow: 0 1px 2px rgba(20, 28, 38, .05), 0 8px 24px rgba(20, 28, 38, .08);
+      --mono: 'Space Mono', ui-monospace, Menlo, monospace;
+      --sans: 'Be Vietnam Pro', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    }
 
-  header.app{margin-bottom:18px}
-  .brand .logo{height:30px;width:auto;display:block;margin-bottom:9px}
-  .brand h1{font-size:23px;font-weight:800;letter-spacing:-.4px;margin:0}
-  .brand p{margin:2px 0 0;color:var(--muted);font-size:13.5px}
+    * {
+      box-sizing: border-box
+    }
 
-  .connbar{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;margin:14px 0;padding:9px 13px;border-radius:10px;border:1px solid var(--line)}
-  .connbar .cdot{width:9px;height:9px;border-radius:50%;flex:none}
-  .connbar.st-view{background:var(--accent-soft);border-color:#C6D0F2;color:#243FB0}
-  .connbar.st-view .cdot{background:#243FB0}
-  .connbar.st-local{background:#FBEFDA;border-color:#EAD3A8;color:#8a5a12}
-  .connbar.st-local .cdot{background:var(--amber)}
-  .connbar.st-error{background:#FBECEB;border-color:#EBC7C4;color:#8a2f2a}
-  .connbar.st-error .cdot{background:var(--danger)}
-  .connbar .cmsg{flex:1} .connbar .csync{font-weight:600;opacity:.8;font-size:12px}
+    html,
+    body {
+      margin: 0;
+      padding: 0
+    }
 
-  .monthbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap}
-  .monthbar .title{font-size:19px;font-weight:700;letter-spacing:-.3px}
-  .monthbar .nav{display:flex;align-items:center;gap:6px}
-  .btn{border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);padding:9px 14px;border-radius:10px;font-size:13.5px;font-weight:600;display:inline-flex;align-items:center;gap:7px;transition:.15s;white-space:nowrap}
-  .btn:hover{border-color:var(--accent);color:var(--accent)}
-  .btn svg{width:16px;height:16px;stroke-width:2}
-  .iconbtn{width:38px;height:38px;border-radius:10px;border:1px solid var(--line-strong);background:var(--surface);display:grid;place-items:center;color:var(--ink);transition:.15s}
-  .iconbtn:hover{border-color:var(--accent);color:var(--accent)}
-  .iconbtn svg{width:18px;height:18px;stroke-width:2.2}
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5
+    }
 
-  .cal{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
-  .dow{display:grid;grid-template-columns:repeat(7,1fr);border-bottom:1px solid var(--line)}
-  .dow span{padding:10px 0;text-align:center;font-size:11.5px;font-weight:700;letter-spacing:.6px;color:var(--muted);text-transform:uppercase}
-  .dow span.we{color:var(--weekend)}
-  .grid{display:grid;grid-template-columns:repeat(7,1fr)}
-  .cell{position:relative;min-height:118px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:8px 8px 6px;text-align:left;background:var(--surface);transition:background .12s;display:flex;flex-direction:column;gap:5px}
-  .cell:nth-child(7n){border-right:none}
-  .cell:hover:not(.blank){background:#F7F9FC}
-  .cell.blank{background:#F4F6F9;cursor:default}
-  .daytop{display:flex;align-items:baseline;justify-content:space-between;gap:4px}
-  .cell .num{font-family:var(--mono);font-size:24px;font-weight:700;color:var(--ink);line-height:.9;letter-spacing:-.5px}
-  .cell .lunar{font-size:10.5px;color:var(--faint);font-weight:600;white-space:nowrap;line-height:1}
-  .cell .lunar.first{color:var(--amber)}
-  .cell.we .num{color:var(--weekend)}
-  .cell.we .lunar{color:var(--weekend);opacity:.75}
-  .cell.today .num{background:var(--accent);color:#fff;border-radius:8px;padding:2px 7px;margin:-2px 0 0 -2px}
-  .cell-issue{align-self:flex-start;font-size:10px;font-weight:700;color:#9a6412;background:var(--amber-soft);border:1px solid #EAD3A8;padding:1px 6px;border-radius:5px;line-height:1.5}
-  .cell-holiday{align-self:stretch;font-size:9.5px;font-weight:700;line-height:1.2;padding:2px 5px;border-radius:5px;white-space:normal;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-  .cell-holiday.h{color:#a3242b;background:#FBE3E1}
-  .cell-holiday.e{color:#243FB0;background:#E6EAF8}
-  .nomeet-tag{margin-top:auto;background:var(--danger);color:#fff;font-size:10.5px;font-weight:700;line-height:1.2;padding:3px 6px;border-radius:6px;text-align:center}
-  .hasdot{width:7px;height:7px;border-radius:50%;background:var(--amber);position:absolute;bottom:9px;left:9px}
+    button {
+      font-family: inherit;
+      cursor: pointer
+    }
 
-  dialog{border:none;border-radius:16px;padding:0;box-shadow:0 24px 70px rgba(15,22,32,.32);max-width:600px;width:calc(100% - 32px)}
-  dialog::backdrop{background:rgba(20,28,38,.45)}
-  .dvhead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:20px 22px 16px;background:linear-gradient(135deg,#243FB0,#1B2E7E);color:#fff;border-radius:16px 16px 0 0}
-  .dvdate{font-size:21px;font-weight:800;letter-spacing:-.3px}
-  .dvlunar{font-size:13.5px;opacity:.85;margin-top:3px;font-weight:500}
-  .dvclose{border:none;background:rgba(255,255,255,.16);color:#fff;width:34px;height:34px;border-radius:9px;display:grid;place-items:center;flex:none}
-  .dvclose:hover{background:rgba(255,255,255,.28)} .dvclose svg{width:18px;height:18px;stroke-width:2.2}
-  .dvbody{padding:8px 22px 22px;max-height:64vh;overflow:auto}
-  .dv-grp{margin-top:18px}
-  .dv-grp .dv-gh{display:flex;align-items:center;gap:9px;padding-bottom:7px;margin-bottom:4px;border-bottom:2px solid}
-  .dv-grp .dv-gh .dot{width:11px;height:11px;border-radius:3px}
-  .dv-grp .dv-gh .gn{font-size:13px;font-weight:800;letter-spacing:.6px;text-transform:uppercase}
-  .dv-issue{background:var(--amber-soft);border:1px solid #EAD3A8;color:#8a5a12;border-radius:9px;padding:8px 13px;font-size:14px;margin:2px 0 8px}
-  .dv-issue b{font-size:17px;font-weight:800;color:#9a6412}
-  .dv-row{display:flex;align-items:baseline;justify-content:space-between;gap:14px;padding:9px 2px;border-bottom:1px solid var(--line)}
-  .dv-row:last-child{border-bottom:none}
-  .dv-pos{font-size:14px;color:var(--muted);font-weight:600;flex:none;max-width:48%}
-  .dv-person{font-size:17px;font-weight:700;text-align:right;color:var(--ink)}
-  .dv-person.empty{font-size:14px;font-weight:500;color:var(--faint);font-style:italic}
-  .dv-nomeet{margin-top:14px;background:var(--danger);color:#fff;border-radius:12px;padding:13px 16px}
-  .dv-nomeet .t{font-size:16px;font-weight:800;letter-spacing:.3px;display:flex;align-items:center;gap:8px}
-  .dv-nomeet .t svg{width:19px;height:19px;stroke-width:2.4}
-  .dv-nomeet .r{font-size:13.5px;margin-top:5px;opacity:.95;line-height:1.5}
-  .dv-holiday{border-radius:11px;padding:10px 14px;font-size:14px;font-weight:700;margin-top:12px;display:flex;align-items:center;gap:9px}
-  .dv-holiday .dot2{width:9px;height:9px;border-radius:50%;flex:none}
-  .dv-holiday.h{background:#FBE3E1;color:#a3242b} .dv-holiday.h .dot2{background:#a3242b}
-  .dv-holiday.e{background:#E6EAF8;color:#243FB0} .dv-holiday.e .dot2{background:#243FB0}
-  .dv-note{margin-top:18px;background:#FFF9EC;border:1px solid #F0DFBD;border-radius:11px;padding:12px 14px;font-size:14px;line-height:1.55;white-space:pre-line;overflow-wrap:anywhere}
-  .dv-note b{display:block;font-size:11.5px;text-transform:uppercase;letter-spacing:.5px;color:var(--amber);margin-bottom:4px}
-  .dv-empty{text-align:center;padding:30px 10px;color:var(--faint);font-size:15px}
-  .dvfoot{padding:14px 22px;border-top:1px solid var(--line);display:flex}
-  .dvfoot .btn{flex:1;justify-content:center}
+    :focus-visible {
+      outline: 2.5px solid var(--accent);
+      outline-offset: 2px;
+      border-radius: 6px
+    }
 
-  .gate{position:fixed;inset:0;z-index:200;background:linear-gradient(160deg,#EEF1F5,#DEE4EE);display:flex;align-items:center;justify-content:center;padding:20px}
-  .gate-card{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 20px 60px rgba(20,28,38,.18);padding:30px 26px;width:100%;max-width:360px;text-align:center}
-  .gate-logo{height:30px;width:auto;margin-bottom:14px}
-  .gate-title{font-size:15px;font-weight:800;letter-spacing:-.2px;color:var(--ink);margin-bottom:20px}
-  .gate-checking{color:var(--muted);font-size:14px;padding:10px 0}
-  .gate-label{font-size:13px;font-weight:600;color:var(--muted);margin-bottom:10px}
-  .gate-input{width:100%;text-align:center;font-family:var(--mono);font-size:26px;letter-spacing:10px;font-weight:700;border:1.5px solid var(--line-strong);border-radius:11px;padding:12px 10px;background:#FBFCFD;color:var(--ink)}
-  .gate-input:focus{outline:none;border-color:var(--accent);background:#fff}
-  .gate-btn{width:100%;margin-top:14px;background:var(--accent);color:#fff;border:none;border-radius:11px;padding:12px;font-size:15px;font-weight:700;cursor:pointer}
-  .gate-btn:hover{background:#1B308C}
-  .gate-err{min-height:18px;margin-top:10px;font-size:13px;font-weight:600;color:var(--danger)}
+    .wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px 20px 80px
+    }
 
-  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:11px 18px;border-radius:11px;font-size:13.5px;font-weight:600;box-shadow:0 10px 30px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:.25s;z-index:210}
-  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-  @media (prefers-reduced-motion: reduce){*{transition:none!important}}
-  @media print{ .connbar,.monthbar .nav,.toast{display:none!important} .cal{box-shadow:none;border-color:#999} }
-</style>
+    header.app {
+      margin-bottom: 18px
+    }
+
+    .brand .logo {
+      height: 30px;
+      width: auto;
+      display: block;
+      margin-bottom: 9px
+    }
+
+    .brand h1 {
+      font-size: 23px;
+      font-weight: 800;
+      letter-spacing: -.4px;
+      margin: 0
+    }
+
+    .brand p {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 13.5px
+    }
+
+    .connbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      margin: 14px 0;
+      padding: 9px 13px;
+      border-radius: 10px;
+      border: 1px solid var(--line)
+    }
+
+    .connbar .cdot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      flex: none
+    }
+
+    .connbar.st-view {
+      background: var(--accent-soft);
+      border-color: #C6D0F2;
+      color: #243FB0
+    }
+
+    .connbar.st-view .cdot {
+      background: #243FB0
+    }
+
+    .connbar.st-local {
+      background: #FBEFDA;
+      border-color: #EAD3A8;
+      color: #8a5a12
+    }
+
+    .connbar.st-local .cdot {
+      background: var(--amber)
+    }
+
+    .connbar.st-error {
+      background: #FBECEB;
+      border-color: #EBC7C4;
+      color: #8a2f2a
+    }
+
+    .connbar.st-error .cdot {
+      background: var(--danger)
+    }
+
+    .connbar .cmsg {
+      flex: 1
+    }
+
+    .connbar .csync {
+      font-weight: 600;
+      opacity: .8;
+      font-size: 12px
+    }
+
+    .monthbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+      flex-wrap: wrap
+    }
+
+    .monthbar .title {
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -.3px
+    }
+
+    .monthbar .nav {
+      display: flex;
+      align-items: center;
+      gap: 6px
+    }
+
+    .btn {
+      border: 1px solid var(--line-strong);
+      background: var(--surface);
+      color: var(--ink);
+      padding: 9px 14px;
+      border-radius: 10px;
+      font-size: 13.5px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: .15s;
+      white-space: nowrap
+    }
+
+    .btn:hover {
+      border-color: var(--accent);
+      color: var(--accent)
+    }
+
+    .btn svg {
+      width: 16px;
+      height: 16px;
+      stroke-width: 2
+    }
+
+    .iconbtn {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      border: 1px solid var(--line-strong);
+      background: var(--surface);
+      display: grid;
+      place-items: center;
+      color: var(--ink);
+      transition: .15s
+    }
+
+    .iconbtn:hover {
+      border-color: var(--accent);
+      color: var(--accent)
+    }
+
+    .iconbtn svg {
+      width: 18px;
+      height: 18px;
+      stroke-width: 2.2
+    }
+
+    .cal {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden
+    }
+
+    .dow {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      border-bottom: 1px solid var(--line)
+    }
+
+    .dow span {
+      padding: 10px 0;
+      text-align: center;
+      font-size: 11.5px;
+      font-weight: 700;
+      letter-spacing: .6px;
+      color: var(--muted);
+      text-transform: uppercase
+    }
+
+    .dow span.we {
+      color: var(--weekend)
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr)
+    }
+
+    .cell {
+      position: relative;
+      min-height: 118px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 8px 8px 6px;
+      text-align: left;
+      background: var(--surface);
+      transition: background .12s;
+      display: flex;
+      flex-direction: column;
+      gap: 5px
+    }
+
+    .cell:nth-child(7n) {
+      border-right: none
+    }
+
+    .cell:hover:not(.blank) {
+      background: #F7F9FC
+    }
+
+    .cell.blank {
+      background: #F4F6F9;
+      cursor: default
+    }
+
+    .daytop {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 4px
+    }
+
+    .cell .num {
+      font-family: var(--mono);
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: .9;
+      letter-spacing: -.5px
+    }
+
+    .cell .lunar {
+      font-size: 10.5px;
+      color: var(--faint);
+      font-weight: 600;
+      white-space: nowrap;
+      line-height: 1
+    }
+
+    .cell .lunar.first {
+      color: var(--amber)
+    }
+
+    .cell.we .num {
+      color: var(--weekend)
+    }
+
+    .cell.we .lunar {
+      color: var(--weekend);
+      opacity: .75
+    }
+
+    .cell.today .num {
+      background: var(--accent);
+      color: #fff;
+      border-radius: 8px;
+      padding: 2px 7px;
+      margin: -2px 0 0 -2px
+    }
+
+    .cell-issue {
+      align-self: flex-start;
+      font-size: 10px;
+      font-weight: 700;
+      color: #9a6412;
+      background: var(--amber-soft);
+      border: 1px solid #EAD3A8;
+      padding: 1px 6px;
+      border-radius: 5px;
+      line-height: 1.5
+    }
+
+    .cell-holiday {
+      align-self: stretch;
+      font-size: 9.5px;
+      font-weight: 700;
+      line-height: 1.2;
+      padding: 2px 5px;
+      border-radius: 5px;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden
+    }
+
+    .cell-holiday.h {
+      color: #a3242b;
+      background: #FBE3E1
+    }
+
+    .cell-holiday.e {
+      color: #243FB0;
+      background: #E6EAF8
+    }
+
+    .nomeet-tag {
+      margin-top: auto;
+      background: var(--danger);
+      color: #fff;
+      font-size: 10.5px;
+      font-weight: 700;
+      line-height: 1.2;
+      padding: 3px 6px;
+      border-radius: 6px;
+      text-align: center
+    }
+
+    .hasdot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--amber);
+      position: absolute;
+      bottom: 9px;
+      left: 9px
+    }
+
+    dialog {
+      border: none;
+      border-radius: 16px;
+      padding: 0;
+      box-shadow: 0 24px 70px rgba(15, 22, 32, .32);
+      max-width: 600px;
+      width: calc(100% - 32px)
+    }
+
+    dialog::backdrop {
+      background: rgba(20, 28, 38, .45)
+    }
+
+    .dvhead {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 20px 22px 16px;
+      background: linear-gradient(135deg, #243FB0, #1B2E7E);
+      color: #fff;
+      border-radius: 16px 16px 0 0
+    }
+
+    .dvdate {
+      font-size: 21px;
+      font-weight: 800;
+      letter-spacing: -.3px
+    }
+
+    .dvlunar {
+      font-size: 13.5px;
+      opacity: .85;
+      margin-top: 3px;
+      font-weight: 500
+    }
+
+    .dvclose {
+      border: none;
+      background: rgba(255, 255, 255, .16);
+      color: #fff;
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      display: grid;
+      place-items: center;
+      flex: none
+    }
+
+    .dvclose:hover {
+      background: rgba(255, 255, 255, .28)
+    }
+
+    .dvclose svg {
+      width: 18px;
+      height: 18px;
+      stroke-width: 2.2
+    }
+
+    .dvbody {
+      padding: 8px 22px 22px;
+      max-height: 64vh;
+      overflow: auto
+    }
+
+    .dv-grp {
+      margin-top: 18px
+    }
+
+    .dv-grp .dv-gh {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding-bottom: 7px;
+      margin-bottom: 4px;
+      border-bottom: 2px solid
+    }
+
+    .dv-grp .dv-gh .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 3px
+    }
+
+    .dv-grp .dv-gh .gn {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .6px;
+      text-transform: uppercase
+    }
+
+    .dv-issue {
+      background: var(--amber-soft);
+      border: 1px solid #EAD3A8;
+      color: #8a5a12;
+      border-radius: 9px;
+      padding: 8px 13px;
+      font-size: 14px;
+      margin: 2px 0 8px
+    }
+
+    .dv-issue b {
+      font-size: 17px;
+      font-weight: 800;
+      color: #9a6412
+    }
+
+    .dv-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 9px 2px;
+      border-bottom: 1px solid var(--line)
+    }
+
+    .dv-row:last-child {
+      border-bottom: none
+    }
+
+    .dv-pos {
+      font-size: 14px;
+      color: var(--muted);
+      font-weight: 600;
+      flex: none;
+      max-width: 48%
+    }
+
+    .dv-person {
+      font-size: 17px;
+      font-weight: 700;
+      text-align: right;
+      color: var(--ink)
+    }
+
+    .dv-person.empty {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--faint);
+      font-style: italic
+    }
+
+    .dv-nomeet {
+      margin-top: 14px;
+      background: var(--danger);
+      color: #fff;
+      border-radius: 12px;
+      padding: 13px 16px
+    }
+
+    .dv-nomeet .t {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: .3px;
+      display: flex;
+      align-items: center;
+      gap: 8px
+    }
+
+    .dv-nomeet .t svg {
+      width: 19px;
+      height: 19px;
+      stroke-width: 2.4
+    }
+
+    .dv-nomeet .r {
+      font-size: 13.5px;
+      margin-top: 5px;
+      opacity: .95;
+      line-height: 1.5
+    }
+
+    .dv-holiday {
+      border-radius: 11px;
+      padding: 10px 14px;
+      font-size: 14px;
+      font-weight: 700;
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      gap: 9px
+    }
+
+    .dv-holiday .dot2 {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      flex: none
+    }
+
+    .dv-holiday.h {
+      background: #FBE3E1;
+      color: #a3242b
+    }
+
+    .dv-holiday.h .dot2 {
+      background: #a3242b
+    }
+
+    .dv-holiday.e {
+      background: #E6EAF8;
+      color: #243FB0
+    }
+
+    .dv-holiday.e .dot2 {
+      background: #243FB0
+    }
+
+    .dv-note {
+      margin-top: 18px;
+      background: #FFF9EC;
+      border: 1px solid #F0DFBD;
+      border-radius: 11px;
+      padding: 12px 14px;
+      font-size: 14px;
+      line-height: 1.55;
+      white-space: pre-line;
+      overflow-wrap: anywhere
+    }
+
+    .dv-note b {
+      display: block;
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: var(--amber);
+      margin-bottom: 4px
+    }
+
+    .dv-empty {
+      text-align: center;
+      padding: 30px 10px;
+      color: var(--faint);
+      font-size: 15px
+    }
+
+    .dvfoot {
+      padding: 14px 22px;
+      border-top: 1px solid var(--line);
+      display: flex
+    }
+
+    .dvfoot .btn {
+      flex: 1;
+      justify-content: center
+    }
+
+    .gate {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: linear-gradient(160deg, #EEF1F5, #DEE4EE);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px
+    }
+
+    .gate-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 20px 60px rgba(20, 28, 38, .18);
+      padding: 30px 26px;
+      width: 100%;
+      max-width: 360px;
+      text-align: center
+    }
+
+    .gate-logo {
+      height: 30px;
+      width: auto;
+      margin-bottom: 14px
+    }
+
+    .gate-title {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: -.2px;
+      color: var(--ink);
+      margin-bottom: 20px
+    }
+
+    .gate-checking {
+      color: var(--muted);
+      font-size: 14px;
+      padding: 10px 0
+    }
+
+    .gate-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 10px
+    }
+
+    .gate-input {
+      width: 100%;
+      text-align: center;
+      font-family: var(--mono);
+      font-size: 26px;
+      letter-spacing: 10px;
+      font-weight: 700;
+      border: 1.5px solid var(--line-strong);
+      border-radius: 11px;
+      padding: 12px 10px;
+      background: #FBFCFD;
+      color: var(--ink)
+    }
+
+    .gate-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      background: #fff
+    }
+
+    .gate-btn {
+      width: 100%;
+      margin-top: 14px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 11px;
+      padding: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer
+    }
+
+    .gate-btn:hover {
+      background: #1B308C
+    }
+
+    .gate-err {
+      min-height: 18px;
+      margin-top: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--danger)
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 22px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--ink);
+      color: #fff;
+      padding: 11px 18px;
+      border-radius: 11px;
+      font-size: 13.5px;
+      font-weight: 600;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .25);
+      opacity: 0;
+      pointer-events: none;
+      transition: .25s;
+      z-index: 210
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0)
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        transition: none !important
+      }
+    }
+
+    @media print {
+
+      .connbar,
+      .monthbar .nav,
+      .toast {
+        display: none !important
+      }
+
+      .cal {
+        box-shadow: none;
+        border-color: #999
+      }
+    }
+  </style>
 </head>
+
 <body>
-<div class="wrap">
-  <header class="app">
-    <div class="brand">
-      <img class="logo" id="hdrLogo" alt="Báo Thanh Niên">
-      <h1>LỊCH TRỰC TÒA SOẠN TỔNG HỢP</h1>
-      <p>Bấm vào một ngày để xem chi tiết danh sách trực.</p>
+  <div class="wrap">
+    <header class="app">
+      <div class="brand">
+        <img class="logo" id="hdrLogo" alt="Báo Thanh Niên">
+        <h1>LỊCH TRỰC TÒA SOẠN TỔNG HỢP</h1>
+        <p>Bấm vào một ngày để xem chi tiết danh sách trực.</p>
+      </div>
+    </header>
+
+    <div class="connbar" id="connbar"></div>
+
+    <div class="monthbar">
+      <div class="title" id="monthTitle">—</div>
+      <div class="nav">
+        <button class="iconbtn" id="prevM" title="Tháng trước"><svg viewBox="0 0 24 24" fill="none"
+            stroke="currentColor">
+            <path d="M15 18l-6-6 6-6" />
+          </svg></button>
+        <button class="btn" id="todayBtn">Hôm nay</button>
+        <button class="iconbtn" id="nextM" title="Tháng sau"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M9 18l6-6-6-6" />
+          </svg></button>
+        <button class="btn" id="btnRefresh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M21 12a9 9 0 11-3-6.7L21 8M21 4v4h-4" />
+          </svg>Làm mới</button>
+      </div>
     </div>
-  </header>
 
-  <div class="connbar" id="connbar"></div>
-
-  <div class="monthbar">
-    <div class="title" id="monthTitle">—</div>
-    <div class="nav">
-      <button class="iconbtn" id="prevM" title="Tháng trước"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M15 18l-6-6 6-6"/></svg></button>
-      <button class="btn" id="todayBtn">Hôm nay</button>
-      <button class="iconbtn" id="nextM" title="Tháng sau"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 18l6-6-6-6"/></svg></button>
-      <button class="btn" id="btnRefresh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 12a9 9 0 11-3-6.7L21 8M21 4v4h-4"/></svg>Làm mới</button>
-    </div>
-  </div>
-
-  <div class="cal">
-    <div class="dow"><span>T2</span><span>T3</span><span>T4</span><span>T5</span><span>T6</span><span class="we">T7</span><span class="we">CN</span></div>
-    <div class="grid" id="grid"></div>
-  </div>
-</div>
-
-<dialog id="dayDlg">
-  <div class="dvhead">
-    <div><div class="dvdate" id="dvDate">—</div><div class="dvlunar" id="dvLunar"></div></div>
-    <button class="dvclose" id="dvClose" aria-label="Đóng"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
-  </div>
-  <div class="dvbody" id="dvBody"></div>
-  <div class="dvfoot"><button class="btn" id="dvCloseBtn">Đóng</button></div>
-</dialog>
-
-<div class="gate" id="gate" style="display:none">
-  <div class="gate-card">
-    <img class="gate-logo" id="gateLogo" alt="Thanh Niên">
-    <div class="gate-title">LỊCH TRỰC TÒA SOẠN TỔNG HỢP</div>
-    <div class="gate-checking" id="gateChecking">Đang kiểm tra…</div>
-    <div class="gate-form" id="gateForm" style="display:none">
-      <div class="gate-label">Nhập mã xem (6 chữ số)</div>
-      <input class="gate-input" id="gateInput" inputmode="numeric" maxlength="6" placeholder="••••••" autocomplete="off">
-      <button class="gate-btn" id="gateSubmit">Vào xem</button>
-      <div class="gate-err" id="gateErr"></div>
+    <div class="cal">
+      <div class="dow"><span>T2</span><span>T3</span><span>T4</span><span>T5</span><span>T6</span><span
+          class="we">T7</span><span class="we">CN</span></div>
+      <div class="grid" id="grid"></div>
     </div>
   </div>
-</div>
 
-<div class="toast" id="toast"></div>
+  <dialog id="dayDlg">
+    <div class="dvhead">
+      <div>
+        <div class="dvdate" id="dvDate">—</div>
+        <div class="dvlunar" id="dvLunar"></div>
+      </div>
+      <button class="dvclose" id="dvClose" aria-label="Đóng"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M6 6l12 12M18 6L6 18" />
+        </svg></button>
+    </div>
+    <div class="dvbody" id="dvBody"></div>
+    <div class="dvfoot"><button class="btn" id="dvCloseBtn">Đóng</button></div>
+  </dialog>
 
-<script>
-(function(){
-  "use strict";
+  <div class="gate" id="gate" style="display:none">
+    <div class="gate-card">
+      <img class="gate-logo" id="gateLogo" alt="Thanh Niên">
+      <div class="gate-title">LỊCH TRỰC TÒA SOẠN TỔNG HỢP</div>
+      <div class="gate-checking" id="gateChecking">Đang kiểm tra…</div>
+      <div class="gate-form" id="gateForm" style="display:none">
+        <div class="gate-label">Nhập mã xem (6 chữ số)</div>
+        <input class="gate-input" id="gateInput" inputmode="numeric" maxlength="6" placeholder="••••••"
+          autocomplete="off">
+        <button class="gate-btn" id="gateSubmit">Vào xem</button>
+        <div class="gate-err" id="gateErr"></div>
+      </div>
+    </div>
+  </div>
 
-  // ====== CẤU HÌNH MÁY CHỦ (Google Sheets qua Apps Script) ======
-  // DÁN URL Web App (kết thúc bằng /exec) vào giữa hai dấu nháy dưới đây:
-  const SHEETS_API_URL = "https://script.google.com/macros/s/AKfycby32kzXnjf_L5JEvI_CdTaCT4BAvxgXHesl77T7nxy7kJuJrSzkMmzkvhoDcsVFmuuw/exec";
-  // ==============================================================
+  <div class="toast" id="toast"></div>
 
-  const LOGO="data:image/png;base64,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";
-  document.getElementById("hdrLogo").src=LOGO;
-  document.getElementById("gateLogo").src=LOGO;
+  <script>
+    (function () {
+      "use strict";
 
-  const LS_URL="lichtruc2.url", LS_VIEW="lichtruc2.view", LS_CACHE="lichtruc2.cache";
-  const MONTHS=["Tháng 1","Tháng 2","Tháng 3","Tháng 4","Tháng 5","Tháng 6","Tháng 7","Tháng 8","Tháng 9","Tháng 10","Tháng 11","Tháng 12"];
-  const DOW=["Chủ nhật","Thứ hai","Thứ ba","Thứ tư","Thứ năm","Thứ sáu","Thứ bảy"];
+      // ====== CẤU HÌNH MÁY CHỦ (Google Sheets qua Apps Script) ======
+      // DÁN URL Web App (kết thúc bằng /exec) vào giữa hai dấu nháy dưới đây:
+      const SHEETS_API_URL = "https://script.google.com/macros/s/AKfycby32kzXnjf_L5JEvI_CdTaCT4BAvxgXHesl77T7nxy7kJuJrSzkMmzkvhoDcsVFmuuw/exec";
+      // ==============================================================
 
-  let SERVER_URL=((localStorage.getItem(LS_URL)||SHEETS_API_URL)||"").trim();
-  let viewCode=localStorage.getItem(LS_VIEW)||"";
-  let state=loadCache()||{groups:[],positions:[],assignments:{},notes:{},noMeeting:{}};
-  let view=new Date(); view.setDate(1);
-  let selected=null, gatePassed=false, pulling=false;
+      const LOGO = "data:image/png;base64,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";
+      document.getElementById("hdrLogo").src = LOGO;
+      document.getElementById("gateLogo").src = LOGO;
 
-  function loadCache(){ try{const r=localStorage.getItem(LS_CACHE);return r?JSON.parse(r):null;}catch(e){return null;} }
-  function cache(){ try{localStorage.setItem(LS_CACHE,JSON.stringify(state));}catch(e){} }
-  function connected(){ return !!SERVER_URL; }
-  function key(y,m,d){ return `${y}-${String(m+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`; }
-  function todayKey(){ const t=new Date(); return key(t.getFullYear(),t.getMonth(),t.getDate()); }
-  function escapeHtml(s){ return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
-  function groupOf(pos){ return state.groups.find(g=>g.id===pos.groupId)||state.groups[0]||{color:"#888",name:""}; }
-  function posInGroup(gid){ return state.positions.filter(p=>p.groupId===gid); }
+      const LS_URL = "lichtruc2.url", LS_VIEW = "lichtruc2.view", LS_CACHE = "lichtruc2.cache";
+      const MONTHS = ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"];
+      const DOW = ["Chủ nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy"];
 
-  // ---------- Âm lịch (Hồ Ngọc Đức, TZ=7) ----------
-  const TZ=7, PI=Math.PI, INT=Math.floor;
-  function jdFromDate(dd,mm,yy){ const a=INT((14-mm)/12),y=yy+4800-a,m=mm+12*a-3; let jd=dd+INT((153*m+2)/5)+365*y+INT(y/4)-INT(y/100)+INT(y/400)-32045; if(jd<2299161) jd=dd+INT((153*m+2)/5)+365*y+INT(y/4)-32083; return jd; }
-  function NewMoon(k){ const T=k/1236.85,T2=T*T,T3=T2*T,dr=PI/180; let J=2415020.75933+29.53058868*k+0.0001178*T2-0.000000155*T3; J+=0.00033*Math.sin((166.56+132.87*T-0.009173*T2)*dr); const M=359.2242+29.10535608*k-0.0000333*T2-0.00000347*T3; const Mpr=306.0253+385.81691806*k+0.0107306*T2+0.00001236*T3; const F=21.2964+390.67050646*k-0.0016528*T2-0.00000239*T3; let C=(0.1734-0.000393*T)*Math.sin(M*dr)+0.0021*Math.sin(2*dr*M); C+=-0.4068*Math.sin(Mpr*dr)+0.0161*Math.sin(2*dr*Mpr)-0.0004*Math.sin(3*dr*Mpr); C+=0.0104*Math.sin(2*dr*F)-0.0051*Math.sin(dr*(M+Mpr))-0.0074*Math.sin(dr*(M-Mpr)); C+=0.0004*Math.sin(dr*(2*F+M))-0.0004*Math.sin(dr*(2*F-M))-0.0006*Math.sin(dr*(2*F+Mpr)); C+=0.0010*Math.sin(dr*(2*F-Mpr))+0.0005*Math.sin(dr*(2*Mpr+M)); const dt=(T<-11)?(0.001+0.000839*T+0.0002261*T2-0.00000845*T3-0.000000081*T*T3):(-0.000278+0.000265*T+0.000262*T2); return INT(J+C-dt+0.5+TZ/24); }
-  function SunLong(jdn){ const T=(jdn-2451545.5-TZ/24)/36525,T2=T*T,dr=PI/180; const M=357.52910+35999.05030*T-0.0001559*T2-0.00000048*T*T2; const L0=280.46645+36000.76983*T+0.0003032*T2; let DL=(1.914600-0.004817*T-0.000014*T2)*Math.sin(dr*M); DL+=(0.019993-0.000101*T)*Math.sin(2*dr*M)+0.000290*Math.sin(3*dr*M); let L=(L0+DL)*dr; L=L-PI*2*INT(L/(PI*2)); return INT(L/PI*6); }
-  function LunarMonth11(yy){ const off=jdFromDate(31,12,yy)-2415021,k=INT(off/29.530588853); let nm=NewMoon(k); if(SunLong(nm)>=9) nm=NewMoon(k-1); return nm; }
-  function LeapOffset(a11){ let k=INT((a11-2415021.076998695)/29.530588853+0.5),last=0,i=1; let arc=SunLong(NewMoon(k+i)); do{ last=arc; i++; arc=SunLong(NewMoon(k+i)); }while(arc!=last&&i<14); return i-1; }
-  function solar2lunar(dd,mm,yy){ const dn=jdFromDate(dd,mm,yy); let k=INT((dn-2415021.076998695)/29.530588853); let monthStart=NewMoon(k+1); if(monthStart>dn) monthStart=NewMoon(k); let a11=LunarMonth11(yy),b11=a11,ly; if(a11>=monthStart){ ly=yy; a11=LunarMonth11(yy-1); } else { ly=yy+1; b11=LunarMonth11(yy+1); } const ld=dn-monthStart+1,diff=INT((monthStart-a11)/29); let leap=0,lm=diff+11; if(b11-a11>365){ const lo=LeapOffset(a11); if(diff>=lo){ lm=diff+10; if(diff==lo) leap=1; } } if(lm>12) lm-=12; if(lm>=11&&diff<4) ly-=1; return {day:ld,month:lm,year:ly,leap:leap}; }
-  function lunarShort(y,m,d){ const l=solar2lunar(d,m,y); return {txt:(l.day===1?`${l.day}/${l.month}`:`${l.day}`),first:l.day===1,leap:l.leap,day:l.day,month:l.month}; }
-  function lunarFull(y,m,d){ const l=solar2lunar(d,m,y); return `${l.day}/${l.month}${l.leap?" (nhuận)":""} ÂL`; }
+      let SERVER_URL = ((localStorage.getItem(LS_URL) || SHEETS_API_URL) || "").trim();
+      let viewCode = localStorage.getItem(LS_VIEW) || "";
+      let state = loadCache() || { groups: [], positions: [], assignments: {}, notes: {}, noMeeting: {} };
+      let view = new Date(); view.setDate(1);
+      let selected = null, gatePassed = false, pulling = false;
 
-  // ---------- Số báo in (số ngày mai trong năm) ----------
-  function issueNo(y,m,d){ const nd=new Date(Date.UTC(y,m-1,d+1)); const y2=nd.getUTCFullYear(); return Math.floor((Date.UTC(y2,nd.getUTCMonth(),nd.getUTCDate())-Date.UTC(y2,0,1))/86400000)+1; }
-  function issueStr(y,m,d){ return String(issueNo(y,m,d)).padStart(3,"0"); }
+      function loadCache() { try { const r = localStorage.getItem(LS_CACHE); return r ? JSON.parse(r) : null; } catch (e) { return null; } }
+      function cache() { try { localStorage.setItem(LS_CACHE, JSON.stringify(state)); } catch (e) { } }
+      function connected() { return !!SERVER_URL; }
+      function key(y, m, d) { return `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`; }
+      function todayKey() { const t = new Date(); return key(t.getFullYear(), t.getMonth(), t.getDate()); }
+      function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])); }
+      function groupOf(pos) { return state.groups.find(g => g.id === pos.groupId) || state.groups[0] || { color: "#888", name: "" }; }
+      function posInGroup(gid) { return state.positions.filter(p => p.groupId === gid); }
 
-  // ---------- Ngày lễ / sự kiện ----------
-  const HOL_SOLAR={"1-1":"Tết Dương lịch","4-30":"Ngày Thống nhất đất nước","5-1":"Ngày Quốc tế Lao động","9-2":"Quốc khánh","11-24":"Ngày Văn hóa Việt Nam"};
-  const EVT_SOLAR={"2-3":"Thành lập Đảng","2-27":"Ngày thầy thuốc","3-8":"QT Phụ nữ","3-26":"Thành lập Đoàn","5-7":"Chiến thắng ĐBP","5-19":"Sinh nhật Bác","6-1":"QT Thiếu nhi","6-28":"Ngày Gia đình Việt Nam","7-27":"Ngày Thương binh – Liệt sĩ","7-28":"Thành lập Công đoàn VN","8-19":"CMT8 - CAND","10-10":"Giải phóng Thủ đô","10-20":"Ngày Phụ nữ Việt Nam","11-20":"Ngày Nhà giáo Việt Nam","12-22":"Thành lập QĐND"};
-  function vnHoliday(y,m,d){
-    const l=solar2lunar(d,m,y);
-    if(l.month===1 && l.day>=1 && l.day<=3) return {name:"Tết Nguyên đán – mồng "+l.day, kind:"holiday"};
-    if(l.month===12){ const nd=new Date(Date.UTC(y,m-1,d+1)); const nl=solar2lunar(nd.getUTCDate(),nd.getUTCMonth()+1,nd.getUTCFullYear()); if(nl.month===1 && nl.day===1) return {name:"Tết Nguyên đán – Giao thừa", kind:"holiday"}; }
-    if(l.month===3 && l.day===10) return {name:"Giỗ Tổ", kind:"holiday"};
-    const sk=m+"-"+d;
-    if(HOL_SOLAR[sk]) return {name:HOL_SOLAR[sk], kind:"holiday"};
-    if(EVT_SOLAR[sk]) return {name:EVT_SOLAR[sk], kind:"event"};
-    return null;
-  }
+      // ---------- Âm lịch (Hồ Ngọc Đức, TZ=7) ----------
+      const TZ = 7, PI = Math.PI, INT = Math.floor;
+      function jdFromDate(dd, mm, yy) { const a = INT((14 - mm) / 12), y = yy + 4800 - a, m = mm + 12 * a - 3; let jd = dd + INT((153 * m + 2) / 5) + 365 * y + INT(y / 4) - INT(y / 100) + INT(y / 400) - 32045; if (jd < 2299161) jd = dd + INT((153 * m + 2) / 5) + 365 * y + INT(y / 4) - 32083; return jd; }
+      function NewMoon(k) { const T = k / 1236.85, T2 = T * T, T3 = T2 * T, dr = PI / 180; let J = 2415020.75933 + 29.53058868 * k + 0.0001178 * T2 - 0.000000155 * T3; J += 0.00033 * Math.sin((166.56 + 132.87 * T - 0.009173 * T2) * dr); const M = 359.2242 + 29.10535608 * k - 0.0000333 * T2 - 0.00000347 * T3; const Mpr = 306.0253 + 385.81691806 * k + 0.0107306 * T2 + 0.00001236 * T3; const F = 21.2964 + 390.67050646 * k - 0.0016528 * T2 - 0.00000239 * T3; let C = (0.1734 - 0.000393 * T) * Math.sin(M * dr) + 0.0021 * Math.sin(2 * dr * M); C += -0.4068 * Math.sin(Mpr * dr) + 0.0161 * Math.sin(2 * dr * Mpr) - 0.0004 * Math.sin(3 * dr * Mpr); C += 0.0104 * Math.sin(2 * dr * F) - 0.0051 * Math.sin(dr * (M + Mpr)) - 0.0074 * Math.sin(dr * (M - Mpr)); C += 0.0004 * Math.sin(dr * (2 * F + M)) - 0.0004 * Math.sin(dr * (2 * F - M)) - 0.0006 * Math.sin(dr * (2 * F + Mpr)); C += 0.0010 * Math.sin(dr * (2 * F - Mpr)) + 0.0005 * Math.sin(dr * (2 * Mpr + M)); const dt = (T < -11) ? (0.001 + 0.000839 * T + 0.0002261 * T2 - 0.00000845 * T3 - 0.000000081 * T * T3) : (-0.000278 + 0.000265 * T + 0.000262 * T2); return INT(J + C - dt + 0.5 + TZ / 24); }
+      function SunLong(jdn) { const T = (jdn - 2451545.5 - TZ / 24) / 36525, T2 = T * T, dr = PI / 180; const M = 357.52910 + 35999.05030 * T - 0.0001559 * T2 - 0.00000048 * T * T2; const L0 = 280.46645 + 36000.76983 * T + 0.0003032 * T2; let DL = (1.914600 - 0.004817 * T - 0.000014 * T2) * Math.sin(dr * M); DL += (0.019993 - 0.000101 * T) * Math.sin(2 * dr * M) + 0.000290 * Math.sin(3 * dr * M); let L = (L0 + DL) * dr; L = L - PI * 2 * INT(L / (PI * 2)); return INT(L / PI * 6); }
+      function LunarMonth11(yy) { const off = jdFromDate(31, 12, yy) - 2415021, k = INT(off / 29.530588853); let nm = NewMoon(k); if (SunLong(nm) >= 9) nm = NewMoon(k - 1); return nm; }
+      function LeapOffset(a11) { let k = INT((a11 - 2415021.076998695) / 29.530588853 + 0.5), last = 0, i = 1; let arc = SunLong(NewMoon(k + i)); do { last = arc; i++; arc = SunLong(NewMoon(k + i)); } while (arc != last && i < 14); return i - 1; }
+      function solar2lunar(dd, mm, yy) { const dn = jdFromDate(dd, mm, yy); let k = INT((dn - 2415021.076998695) / 29.530588853); let monthStart = NewMoon(k + 1); if (monthStart > dn) monthStart = NewMoon(k); let a11 = LunarMonth11(yy), b11 = a11, ly; if (a11 >= monthStart) { ly = yy; a11 = LunarMonth11(yy - 1); } else { ly = yy + 1; b11 = LunarMonth11(yy + 1); } const ld = dn - monthStart + 1, diff = INT((monthStart - a11) / 29); let leap = 0, lm = diff + 11; if (b11 - a11 > 365) { const lo = LeapOffset(a11); if (diff >= lo) { lm = diff + 10; if (diff == lo) leap = 1; } } if (lm > 12) lm -= 12; if (lm >= 11 && diff < 4) ly -= 1; return { day: ld, month: lm, year: ly, leap: leap }; }
+      function lunarShort(y, m, d) { const l = solar2lunar(d, m, y); return { txt: (l.day === 1 ? `${l.day}/${l.month}` : `${l.day}`), first: l.day === 1, leap: l.leap, day: l.day, month: l.month }; }
+      function lunarFull(y, m, d) { const l = solar2lunar(d, m, y); return `${l.day}/${l.month}${l.leap ? " (nhuận)" : ""} ÂL`; }
 
-  // ---------- Lịch ----------
-  const grid=document.getElementById("grid"), monthTitle=document.getElementById("monthTitle");
-  function render(){
-    const y=view.getFullYear(),m=view.getMonth();
-    monthTitle.textContent=`${MONTHS[m]}, ${y}`;
-    grid.innerHTML="";
-    const first=new Date(y,m,1); let lead=(first.getDay()+6)%7;
-    const daysIn=new Date(y,m+1,0).getDate(); const tKey=todayKey();
-    const printEnabled=state.groups.some(g=>g.showIssue);
-    for(let i=0;i<lead;i++){const b=document.createElement("div");b.className="cell blank";grid.appendChild(b);}
-    for(let d=1;d<=daysIn;d++){
-      const k=key(y,m,d), dow=new Date(y,m,d).getDay(), we=(dow===0||dow===6);
-      const asg=state.assignments[k]||{};
-      const has=state.positions.some(p=>(asg[p.id]||"").trim()!=="");
-      const noMeet=state.noMeeting && (k in state.noMeeting);
-      const cell=document.createElement("button");
-      cell.className="cell"+(we?" we":"")+(has?" has":"")+(k===tKey?" today":"");
-      const top=document.createElement("div");top.className="daytop";
-      const num=document.createElement("span");num.className="num";num.textContent=d;
-      const lu=lunarShort(y,m+1,d);
-      const lun=document.createElement("span");lun.className="lunar"+(lu.first?" first":"");lun.textContent=lu.txt;
-      top.appendChild(num);top.appendChild(lun);cell.appendChild(top);
-      if(printEnabled){ const iss=document.createElement("div");iss.className="cell-issue";iss.textContent="Số báo "+issueStr(y,m+1,d);cell.appendChild(iss); }
-      const hol=vnHoliday(y,m+1,d);
-      if(hol){ const hd=document.createElement("div");hd.className="cell-holiday "+(hol.kind==="holiday"?"h":"e");hd.textContent=hol.name;hd.title=hol.name;cell.appendChild(hd); }
-      if(noMeet){ const nm=document.createElement("div");nm.className="nomeet-tag";nm.textContent="Không họp giao ban";cell.appendChild(nm); }
-      if(has && !noMeet){ const dot=document.createElement("div");dot.className="hasdot";cell.appendChild(dot); }
-      cell.addEventListener("click",()=>openDay(k));
-      grid.appendChild(cell);
-    }
-    const tail=(7-((lead+daysIn)%7))%7;
-    for(let i=0;i<tail;i++){const b=document.createElement("div");b.className="cell blank";grid.appendChild(b);}
-  }
+      // ---------- Số báo in (số ngày mai trong năm) ----------
+      function issueNo(y, m, d) { const nd = new Date(Date.UTC(y, m - 1, d + 1)); const y2 = nd.getUTCFullYear(); return Math.floor((Date.UTC(y2, nd.getUTCMonth(), nd.getUTCDate()) - Date.UTC(y2, 0, 1)) / 86400000) + 1; }
+      function issueStr(y, m, d) { return String(issueNo(y, m, d)).padStart(3, "0"); }
 
-  // ---------- Pop-up xem ngày ----------
-  const dayDlg=document.getElementById("dayDlg"),dvDate=document.getElementById("dvDate"),
-        dvLunar=document.getElementById("dvLunar"),dvBody=document.getElementById("dvBody");
-  document.getElementById("dvClose").onclick=()=>dayDlg.close();
-  document.getElementById("dvCloseBtn").onclick=()=>dayDlg.close();
-  dayDlg.addEventListener("cancel",e=>{e.preventDefault();dayDlg.close();});
+      // ---------- Ngày lễ / sự kiện ----------
+      const HOL_SOLAR = { "1-1": "Tết Dương lịch", "4-30": "Ngày Thống nhất đất nước", "5-1": "Ngày Quốc tế Lao động", "9-2": "Quốc khánh", "11-24": "Ngày Văn hóa Việt Nam" };
+      const EVT_SOLAR = { "2-3": "Thành lập Đảng", "2-27": "Ngày thầy thuốc", "3-8": "QT Phụ nữ", "3-26": "Thành lập Đoàn", "5-7": "Chiến thắng ĐBP", "5-19": "Sinh nhật Bác", "6-1": "QT Thiếu nhi", "6-28": "Ngày Gia đình Việt Nam", "7-27": "Ngày Thương binh – Liệt sĩ", "7-28": "Thành lập Công đoàn VN", "8-19": "CMT8 - CAND", "10-10": "Giải phóng Thủ đô", "10-20": "Ngày Phụ nữ Việt Nam", "11-20": "Ngày Nhà giáo Việt Nam", "12-22": "Thành lập QĐND" };
+      function vnHoliday(y, m, d) {
+        const l = solar2lunar(d, m, y);
+        if (l.month === 1 && l.day >= 1 && l.day <= 3) return { name: "Tết Nguyên đán – mồng " + l.day, kind: "holiday" };
+        if (l.month === 12) { const nd = new Date(Date.UTC(y, m - 1, d + 1)); const nl = solar2lunar(nd.getUTCDate(), nd.getUTCMonth() + 1, nd.getUTCFullYear()); if (nl.month === 1 && nl.day === 1) return { name: "Tết Nguyên đán – Giao thừa", kind: "holiday" }; }
+        if (l.month === 3 && l.day === 10) return { name: "Giỗ Tổ", kind: "holiday" };
+        const sk = m + "-" + d;
+        if (HOL_SOLAR[sk]) return { name: HOL_SOLAR[sk], kind: "holiday" };
+        if (EVT_SOLAR[sk]) return { name: EVT_SOLAR[sk], kind: "event" };
+        return null;
+      }
 
-  function buildDay(k){
-    const [y,m,d]=k.split("-").map(Number), dt=new Date(y,m-1,d);
-    dvDate.textContent=`${DOW[dt.getDay()]}, ${d}/${m}/${y}`;
-    dvLunar.textContent="Âm lịch "+lunarFull(y,m,d);
-    const asg=state.assignments[k]||{};
-    dvBody.innerHTML="";
-    if(state.noMeeting && (k in state.noMeeting)){
-      const b=document.createElement("div");b.className="dv-nomeet";
-      const reason=(state.noMeeting[k]||"").trim();
-      b.innerHTML=`<div class="t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M8 12h8"/></svg>KHÔNG HỌP GIAO BAN</div>${reason?`<div class="r">Lý do: ${escapeHtml(reason)}</div>`:""}`;
-      dvBody.appendChild(b);
-    }
-    const hol=vnHoliday(y,m,d);
-    if(hol){ const hb=document.createElement("div");hb.className="dv-holiday "+(hol.kind==="holiday"?"h":"e");hb.innerHTML=`<span class="dot2"></span><span>${hol.kind==="holiday"?"Ngày nghỉ lễ: ":"Sự kiện: "}${escapeHtml(hol.name)}</span>`;dvBody.appendChild(hb); }
-    let any=false;
-    state.groups.forEach(g=>{
-      const list=posInGroup(g.id); if(list.length===0) return;
-      const block=document.createElement("div");block.className="dv-grp";
-      const gh=document.createElement("div");gh.className="dv-gh";gh.style.borderColor=g.color+"55";
-      gh.innerHTML=`<span class="dot" style="background:${g.color}"></span><span class="gn" style="color:${g.color}">${escapeHtml(g.name)}</span>`;
-      block.appendChild(gh);
-      if(g.showIssue){ const iss=document.createElement("div");iss.className="dv-issue";iss.innerHTML=`Trực số báo in: <b>${issueStr(y,m,d)}</b>`;block.appendChild(iss); }
-      list.forEach(pos=>{
-        const person=(asg[pos.id]||"").trim(); if(person) any=true;
-        const row=document.createElement("div");row.className="dv-row";
-        row.innerHTML=`<span class="dv-pos">${escapeHtml(pos.name)}</span><span class="dv-person${person?"":" empty"}">${person?escapeHtml(person):"— chưa phân —"}</span>`;
-        block.appendChild(row);
-      });
-      dvBody.appendChild(block);
-    });
-    if(!any){ const e=document.createElement("div");e.className="dv-empty";e.textContent="Chưa phân trực cho ngày này."; const nm=dvBody.querySelector(".dv-nomeet"); dvBody.insertBefore(e, nm?nm.nextSibling:dvBody.firstChild); }
-    if((state.notes[k]||"").trim()){ const n=document.createElement("div");n.className="dv-note";n.innerHTML=`<b>Lưu ý</b>${escapeHtml(state.notes[k])}`;dvBody.appendChild(n); }
-  }
-  function openDay(k){ selected=k; buildDay(k); dayDlg.showModal(); }
+      // ---------- Lịch ----------
+      const grid = document.getElementById("grid"), monthTitle = document.getElementById("monthTitle");
+      function render() {
+        const y = view.getFullYear(), m = view.getMonth();
+        monthTitle.textContent = `${MONTHS[m]}, ${y}`;
+        grid.innerHTML = "";
+        const first = new Date(y, m, 1); let lead = (first.getDay() + 6) % 7;
+        const daysIn = new Date(y, m + 1, 0).getDate(); const tKey = todayKey();
+        const printEnabled = state.groups.some(g => g.showIssue);
+        for (let i = 0; i < lead; i++) { const b = document.createElement("div"); b.className = "cell blank"; grid.appendChild(b); }
+        for (let d = 1; d <= daysIn; d++) {
+          const k = key(y, m, d), dow = new Date(y, m, d).getDay(), we = (dow === 0 || dow === 6);
+          const asg = state.assignments[k] || {};
+          const has = state.positions.some(p => (asg[p.id] || "").trim() !== "");
+          const noMeet = state.noMeeting && (k in state.noMeeting);
+          const cell = document.createElement("button");
+          cell.className = "cell" + (we ? " we" : "") + (has ? " has" : "") + (k === tKey ? " today" : "");
+          const top = document.createElement("div"); top.className = "daytop";
+          const num = document.createElement("span"); num.className = "num"; num.textContent = d;
+          const lu = lunarShort(y, m + 1, d);
+          const lun = document.createElement("span"); lun.className = "lunar" + (lu.first ? " first" : ""); lun.textContent = lu.txt;
+          top.appendChild(num); top.appendChild(lun); cell.appendChild(top);
+          if (printEnabled) { const iss = document.createElement("div"); iss.className = "cell-issue"; iss.textContent = "Số báo " + issueStr(y, m + 1, d); cell.appendChild(iss); }
+          const hol = vnHoliday(y, m + 1, d);
+          if (hol) { const hd = document.createElement("div"); hd.className = "cell-holiday " + (hol.kind === "holiday" ? "h" : "e"); hd.textContent = hol.name; hd.title = hol.name; cell.appendChild(hd); }
+          if (noMeet) { const nm = document.createElement("div"); nm.className = "nomeet-tag"; nm.textContent = "Không họp giao ban"; cell.appendChild(nm); }
+          if (has && !noMeet) { const dot = document.createElement("div"); dot.className = "hasdot"; cell.appendChild(dot); }
+          cell.addEventListener("click", () => openDay(k));
+          grid.appendChild(cell);
+        }
+        const tail = (7 - ((lead + daysIn) % 7)) % 7;
+        for (let i = 0; i < tail; i++) { const b = document.createElement("div"); b.className = "cell blank"; grid.appendChild(b); }
+      }
 
-  // ---------- Trạng thái kết nối ----------
-  const connbar=document.getElementById("connbar");
-  function paintConn(msg){
-    if(!connected()){ connbar.className="connbar st-local"; connbar.innerHTML=`<span class="cdot"></span><span class="cmsg">Chưa kết nối máy chủ — hãy dán URL vào file.</span>`; return; }
-    connbar.className="connbar st-view";
-    connbar.innerHTML=`<span class="cdot"></span><span class="cmsg">Đang xem lịch trực chung (tự cập nhật từ Google Sheet).</span><span class="csync">${msg||""}</span>`;
-  }
-  function setSync(m){ const el=connbar.querySelector(".csync"); if(el) el.textContent=m; else paintConn(m); }
+      // ---------- Pop-up xem ngày ----------
+      const dayDlg = document.getElementById("dayDlg"), dvDate = document.getElementById("dvDate"),
+        dvLunar = document.getElementById("dvLunar"), dvBody = document.getElementById("dvBody");
+      document.getElementById("dvClose").onclick = () => dayDlg.close();
+      document.getElementById("dvCloseBtn").onclick = () => dayDlg.close();
+      dayDlg.addEventListener("cancel", e => { e.preventDefault(); dayDlg.close(); });
 
-  // ---------- Cổng mã xem ----------
-  const gate=document.getElementById("gate"),gateChecking=document.getElementById("gateChecking"),
-        gateForm=document.getElementById("gateForm"),gateInput=document.getElementById("gateInput"),gateErr=document.getElementById("gateErr");
-  function showGate(mode){ gate.style.display="flex"; if(mode==="checking"){ gateChecking.style.display="block"; gateForm.style.display="none"; } else { gateChecking.style.display="none"; gateForm.style.display="block"; gateErr.textContent=""; setTimeout(()=>gateInput.focus(),40); } }
-  function hideGate(){ gate.style.display="none"; }
-  async function submitGate(){
-    const c=(gateInput.value||"").trim();
-    if(!/^\d{6}$/.test(c)){ gateErr.textContent="Mã gồm đúng 6 chữ số."; return; }
-    viewCode=c; localStorage.setItem(LS_VIEW,c);
-    gateErr.textContent="Đang kiểm tra…";
-    await pull(false);
-    if(!gatePassed) gateErr.textContent="Mã xem không đúng.";
-  }
-  document.getElementById("gateSubmit").onclick=submitGate;
-  gateInput.addEventListener("keydown",e=>{ if(e.key==="Enter") submitGate(); });
+      function buildDay(k) {
+        const [y, m, d] = k.split("-").map(Number), dt = new Date(y, m - 1, d);
+        dvDate.textContent = `${DOW[dt.getDay()]}, ${d}/${m}/${y}`;
+        dvLunar.textContent = "Âm lịch " + lunarFull(y, m, d);
+        const asg = state.assignments[k] || {};
+        dvBody.innerHTML = "";
+        if (state.noMeeting && (k in state.noMeeting)) {
+          const b = document.createElement("div"); b.className = "dv-nomeet";
+          const reason = (state.noMeeting[k] || "").trim();
+          b.innerHTML = `<div class="t"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M8 12h8"/></svg>KHÔNG HỌP GIAO BAN</div>${reason ? `<div class="r">Lý do: ${escapeHtml(reason)}</div>` : ""}`;
+          dvBody.appendChild(b);
+        }
+        const hol = vnHoliday(y, m, d);
+        if (hol) { const hb = document.createElement("div"); hb.className = "dv-holiday " + (hol.kind === "holiday" ? "h" : "e"); hb.innerHTML = `<span class="dot2"></span><span>${hol.kind === "holiday" ? "Ngày nghỉ lễ: " : "Sự kiện: "}${escapeHtml(hol.name)}</span>`; dvBody.appendChild(hb); }
+        let any = false;
+        state.groups.forEach(g => {
+          const list = posInGroup(g.id); if (list.length === 0) return;
+          const block = document.createElement("div"); block.className = "dv-grp";
+          const gh = document.createElement("div"); gh.className = "dv-gh"; gh.style.borderColor = g.color + "55";
+          gh.innerHTML = `<span class="dot" style="background:${g.color}"></span><span class="gn" style="color:${g.color}">${escapeHtml(g.name)}</span>`;
+          block.appendChild(gh);
+          if (g.showIssue) { const iss = document.createElement("div"); iss.className = "dv-issue"; iss.innerHTML = `Trực số báo in: <b>${issueStr(y, m, d)}</b>`; block.appendChild(iss); }
+          list.forEach(pos => {
+            const person = (asg[pos.id] || "").trim(); if (person) any = true;
+            const row = document.createElement("div"); row.className = "dv-row";
+            row.innerHTML = `<span class="dv-pos">${escapeHtml(pos.name)}</span><span class="dv-person${person ? "" : " empty"}">${person ? escapeHtml(person) : "— chưa phân —"}</span>`;
+            block.appendChild(row);
+          });
+          dvBody.appendChild(block);
+        });
+        if (!any) { const e = document.createElement("div"); e.className = "dv-empty"; e.textContent = "Chưa phân trực cho ngày này."; const nm = dvBody.querySelector(".dv-nomeet"); dvBody.insertBefore(e, nm ? nm.nextSibling : dvBody.firstChild); }
+        if ((state.notes[k] || "").trim()) { const n = document.createElement("div"); n.className = "dv-note"; n.innerHTML = `<b>Lưu ý</b>${escapeHtml(state.notes[k])}`; dvBody.appendChild(n); }
+      }
+      function openDay(k) { selected = k; buildDay(k); dayDlg.showModal(); }
 
-  // ---------- Đọc dữ liệu ----------
-  async function pull(initial){
-    if(!connected()){ paintConn(); return; }
-    if(pulling) return; pulling=true; setSync("Đang tải…");
-    try{
-      let url=SERVER_URL+(SERVER_URL.includes("?")?"&":"?")+"t="+Date.now();
-      if(viewCode) url+="&k="+encodeURIComponent(viewCode);
-      const res=await fetch(url,{method:"GET"});
-      const j=await res.json();
-      if(j && j.ok){
-        gatePassed=true; hideGate();
-        if(j.data && j.data.groups){ state=j.data; cache(); }
-        paintConn("Đã cập nhật"); render();
-        if(dayDlg.open && selected) buildDay(selected);
-      }else if(j && j.error==="locked"){ gatePassed=false; showGate("input"); }
-      else setSync("Lỗi dữ liệu");
-    }catch(e){ setSync(initial?"Không tải được — hiển thị bản đã lưu":"Mất kết nối"); }
-    pulling=false;
-  }
+      // ---------- Trạng thái kết nối ----------
+      const connbar = document.getElementById("connbar");
+      function paintConn(msg) {
+        if (!connected()) { connbar.className = "connbar st-local"; connbar.innerHTML = `<span class="cdot"></span><span class="cmsg">Chưa kết nối máy chủ — hãy dán URL vào file.</span>`; return; }
+        connbar.className = "connbar st-view";
+        connbar.innerHTML = `<span class="cdot"></span><span class="cmsg">Đang xem lịch trực chung (tự cập nhật từ Google Sheet).</span><span class="csync">${msg || ""}</span>`;
+      }
+      function setSync(m) { const el = connbar.querySelector(".csync"); if (el) el.textContent = m; else paintConn(m); }
 
-  // ---------- Điều hướng ----------
-  document.getElementById("prevM").onclick=()=>{ view.setMonth(view.getMonth()-1); render(); };
-  document.getElementById("nextM").onclick=()=>{ view.setMonth(view.getMonth()+1); render(); };
-  document.getElementById("todayBtn").onclick=()=>{ const t=new Date(); view=new Date(t.getFullYear(),t.getMonth(),1); render(); openDay(todayKey()); };
-  document.getElementById("btnRefresh").onclick=()=>{ if(connected()) pull(false); };
-  document.addEventListener("keydown",e=>{ if(gate.style.display!=="none"||dayDlg.open) return; if(/INPUT|TEXTAREA/.test(document.activeElement.tagName)) return; if(e.key==="ArrowLeft"){view.setMonth(view.getMonth()-1);render();} if(e.key==="ArrowRight"){view.setMonth(view.getMonth()+1);render();} });
+      // ---------- Cổng mã xem ----------
+      const gate = document.getElementById("gate"), gateChecking = document.getElementById("gateChecking"),
+        gateForm = document.getElementById("gateForm"), gateInput = document.getElementById("gateInput"), gateErr = document.getElementById("gateErr");
+      function showGate(mode) { gate.style.display = "flex"; if (mode === "checking") { gateChecking.style.display = "block"; gateForm.style.display = "none"; } else { gateChecking.style.display = "none"; gateForm.style.display = "block"; gateErr.textContent = ""; setTimeout(() => gateInput.focus(), 40); } }
+      function hideGate() { gate.style.display = "none"; }
+      async function submitGate() {
+        const c = (gateInput.value || "").trim();
+        if (!/^\d{6}$/.test(c)) { gateErr.textContent = "Mã gồm đúng 6 chữ số."; return; }
+        viewCode = c; localStorage.setItem(LS_VIEW, c);
+        gateErr.textContent = "Đang kiểm tra…";
+        await pull(false);
+        if (!gatePassed) gateErr.textContent = "Mã xem không đúng.";
+      }
+      document.getElementById("gateSubmit").onclick = submitGate;
+      gateInput.addEventListener("keydown", e => { if (e.key === "Enter") submitGate(); });
 
-  // ---------- Khởi tạo ----------
-  paintConn(); render();
-  if(connected()){ showGate("checking"); pull(true); }
-  setInterval(()=>{ if(connected() && gatePassed && !dayDlg.open && !document.hidden) pull(false); }, 120000);
-  let lastVis=0;
-  document.addEventListener("visibilitychange",()=>{ if(document.hidden||!connected()||!gatePassed) return; const now=Date.now(); if(now-lastVis<15000) return; lastVis=now; pull(false); });
-})();
-</script>
+      // ---------- Đọc dữ liệu ----------
+      async function pull(initial) {
+        if (!connected()) { paintConn(); return; }
+        if (pulling) return; pulling = true; setSync("Đang tải…");
+        try {
+          let url = SERVER_URL + (SERVER_URL.includes("?") ? "&" : "?") + "t=" + Date.now();
+          if (viewCode) url += "&k=" + encodeURIComponent(viewCode);
+          const res = await fetch(url, { method: "GET", redirect: "follow" });
+          const text = await res.text();
+          let j;
+          try { j = JSON.parse(text); } catch (pe) {
+            // Google Apps Script có thể trả về HTML thay vì JSON khi có lỗi
+            console.error("Phản hồi không phải JSON:", text.substring(0, 200));
+            throw new Error("Phản hồi không phải JSON");
+          }
+          if (j && j.ok) {
+            gatePassed = true; hideGate();
+            if (j.data && j.data.groups) { state = j.data; cache(); }
+            paintConn("Đã cập nhật"); render();
+            if (dayDlg.open && selected) buildDay(selected);
+          } else if (j && j.error === "locked") { gatePassed = false; showGate("input"); }
+          else { hideGate(); setSync("Lỗi dữ liệu"); }
+        } catch (e) {
+          console.error("Lỗi kết nối:", e);
+          // ẨN GATE để không bị frozen mãi ở "Đang kiểm tra…"
+          hideGate();
+          setSync(initial ? "Không tải được — hiển thị bản đã lưu" : "Mất kết nối");
+          if (initial) paintConn();
+        }
+        pulling = false;
+      }
+
+      // ---------- Điều hướng ----------
+      document.getElementById("prevM").onclick = () => { view.setMonth(view.getMonth() - 1); render(); };
+      document.getElementById("nextM").onclick = () => { view.setMonth(view.getMonth() + 1); render(); };
+      document.getElementById("todayBtn").onclick = () => { const t = new Date(); view = new Date(t.getFullYear(), t.getMonth(), 1); render(); openDay(todayKey()); };
+      document.getElementById("btnRefresh").onclick = () => { if (connected()) pull(false); };
+      document.addEventListener("keydown", e => { if (gate.style.display !== "none" || dayDlg.open) return; if (/INPUT|TEXTAREA/.test(document.activeElement.tagName)) return; if (e.key === "ArrowLeft") { view.setMonth(view.getMonth() - 1); render(); } if (e.key === "ArrowRight") { view.setMonth(view.getMonth() + 1); render(); } });
+
+      // ---------- Khởi tạo ----------
+      paintConn(); render();
+      if (connected()) { showGate("checking"); pull(true); }
+      setInterval(() => { if (connected() && gatePassed && !dayDlg.open && !document.hidden) pull(false); }, 120000);
+      let lastVis = 0;
+      document.addEventListener("visibilitychange", () => { if (document.hidden || !connected() || !gatePassed) return; const now = Date.now(); if (now - lastVis < 15000) return; lastVis = now; pull(false); });
+    })();
+  </script>
 </body>
+
 </html>
